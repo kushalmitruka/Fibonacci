@@ -1,0 +1,131 @@
+
+<html>
+    <head>
+        <title>Get Fibonacci</title>
+    </head>
+    <body>
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+
+        <!-- jQuery library -->
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+
+        <!-- Latest compiled JavaScript -->
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+
+        <script src="https://code.jquery.com/jquery-1.11.1.min.js"></script>
+
+        <script src="https://code.jquery.com/ui/1.11.1/jquery-ui.min.js"></script>
+
+        <link rel="stylesheet" href="https://code.jquery.com/ui/1.11.1/themes/smoothness/jquery-ui.css" />
+
+        <style>
+
+            .center {
+                text-align: center;
+            }
+
+            body {
+                margin: 20em 5em 20em 5em;
+                padding: 2em;
+                background-color: darkcyan;
+            }
+
+            .major_block {
+                background-color: #c9dde1;
+                border-radius: 5px;
+                min-height: 20em;
+            }
+
+            .margin_top_1em {
+                margin-top: 1em;
+            }
+
+            .margin_top_point_5em{
+                margin-top: 0.5em;
+            }
+
+        </style>
+
+        {% csrf_token %}
+
+        <script>
+
+            $(document).ready(function () {
+                 $('#loading').dialog({
+                    hide: 'slide',
+                    show: 'slide',
+                    autoOpen: false
+                });
+
+                $('input.fib_number').on('keypress', function(event){
+                    var keycode = event.keyCode;
+                    {#For Enter Keypress in input box#}
+                    if (keycode == 13) {
+                        get_time_fib(this, 'input');
+                    }
+                })
+
+            });
+
+        function get_time_fib(obj, type){
+            var number;
+            if (type == 'button'){
+                number = $(obj).siblings('input.fib_number').val().trim();
+            } else {
+                number = $(obj).val().trim();
+            }
+
+            console.log(number);
+            if (number){
+                console.log('Gere');
+                $.ajax({
+                    url: '{{ url('get_n_fibonacci') }}',
+                    type: 'POST',
+                    data: {
+                        'csrfmiddlewaretoken': '{{ csrf_token }}',
+                        'position_n': number
+                    },
+                    beforeSend: function(){
+                        $('#loading').dialog('open').html("<p>Please Wait... </p>");
+                    },
+                    success: function (response) {
+                        console.log(response);
+                        if(response['status'] == 'success'){
+                            $('#loading').dialog('close');
+                            $('.result_msg').empty().append('Number at ' + number + ' is: ' + response['result']['value']);
+                            $('.result_time').empty().append('Calculated in: ' + response['result']['time']);
+
+                        }
+                        else {
+                            var error_msg = "<p class='error'>The following errors occurred.</p>";
+                            error_msg += "<p class='error'>" + response['error_msg']+ "</p>";
+                            $('#loading').html(error_msg);
+                        }
+                    },
+                    error: function(xhr, err){
+                        $('#loading').html("<p class='error'>An error occurred. Please check and try again.</p>");
+                        console.log(xhr.responseText);
+                    }
+
+                })
+            }
+        }
+
+        </script>
+
+        <div class="container-fluid major_block">
+            <div id="loading" title="Processing"></div>
+            <h4 class="center"> Welcome! Enter the Position and I will Fetch the Fibonacci Number for that Position </h4>
+            <div class="center margin_top_1em">
+            <div class="margin_top_point_5em">
+            <input class="form-control fib_number" placeholder="Enter the Number">
+            <button class="btn btn-primary margin_top_1em" id="submit_button" onclick="get_time_fib(this, 'button');">Submit</button>
+
+            <div class="result_msg margin_top_point_5em"></div>
+            <div class="result_time margin_top_point_5em"></div>
+            </div>
+            </div>
+        </div>
+
+    </body>
+</html>
