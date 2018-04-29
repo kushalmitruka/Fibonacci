@@ -81,9 +81,8 @@
                 number = $(obj).val().trim();
             }
 
-            console.log(number);
             if (number){
-                console.log('Gere');
+                var ajaxTime = new Date().getTime();
                 $.ajax({
                     url: '{{ url('get_n_fibonacci') }}',
                     type: 'POST',
@@ -99,7 +98,7 @@
                         if(response['status'] == 'success'){
                             $('#loading').dialog('close');
                             $('.result_msg').empty().append('Number at ' + number + ' is: ' + response['result']['value']);
-                            $('.result_time').empty().append('Calculated in: ' + response['result']['time']);
+{#                            $('.result_time').empty().append('Calculated in: ' + response['result']['time']);#}
 
                         }
                         else {
@@ -113,7 +112,11 @@
                         console.log(xhr.responseText);
                     }
 
-                })
+                }).done(function(){
+                   var totalTime = new Date().getTime()-ajaxTime;
+                    console.log(totalTime / 1000, 'seconds');
+                    $('.result_time').empty().append('Calculated In: ' + totalTime / 1000 + ' seconds');
+                });
             }
         }
 

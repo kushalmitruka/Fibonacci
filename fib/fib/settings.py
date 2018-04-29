@@ -77,6 +77,8 @@ TEMPLATES = [
     }
 ]
 
+CACHE_TIMEOUT = 1800
+
 WSGI_APPLICATION = 'fib.wsgi.application'
 
 
