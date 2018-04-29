@@ -65,7 +65,7 @@ from datetime import datetime
 # 		return power_add_matrix(matrix, seqindex-2)
 
 
-class MatrixFibonacci:
+class NlogNFibonacci:
     Q = [[1, 1],
          [1, 0]]
 
@@ -73,8 +73,12 @@ class MatrixFibonacci:
         self.__memo = {}
 
     def __multiply_matrices(self, M1, M2):
-        """Matrices miltiplication
-        (the matrices are expected in the form of a list of 2x2 size)."""
+        """
+        Multiplication of Matrices (General)
+        :param M1: 2 x 2 Matrix
+        :param M2: 2 x 2 Matrix
+        :return: 2 x 2 Matrix
+        """
 
         a11 = M1[0][0] * M2[0][0] + M1[0][1] * M2[1][0]
         a12 = M1[0][0] * M2[0][1] + M1[0][1] * M2[1][1]
@@ -84,7 +88,12 @@ class MatrixFibonacci:
         return r
 
     def __get_matrix_power(self, M, p):
-        """Matrix exponentiation (it is expected that p that is equal to the power of 2)."""
+        """
+        Power Matrix with given integer p
+        :param M: Matrix
+        :param p: number
+        :return: Power Matrix
+        """
 
         if p == 1:
             return M
@@ -108,7 +117,7 @@ class MatrixFibonacci:
                   for (b, d) in enumerate(reversed(bin(n - 1)[2:])) if d == '1']
         # The same, but less pythonic: http://pastebin.com/h8cKDkHX
 
-        matrices = [self.__get_matrix_power(MatrixFibonacci.Q, p)
+        matrices = [self.__get_matrix_power(NlogNFibonacci.Q, p)
                     for p in powers]
         while len(matrices) > 1:
             M1 = matrices.pop()
@@ -118,7 +127,7 @@ class MatrixFibonacci:
         return matrices[0][0][0]
 
 
-mfib = MatrixFibonacci()
+mfib = NlogNFibonacci()
 
 
 def return_fibonacci_and_time(seqindex):
