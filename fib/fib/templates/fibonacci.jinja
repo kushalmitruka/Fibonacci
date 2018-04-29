@@ -34,6 +34,8 @@
                 background-color: #c9dde1;
                 border-radius: 5px;
                 min-height: 20em;
+                max-height: 25em;
+                overflow-y: scroll;
             }
 
             .margin_top_1em {
@@ -42,6 +44,10 @@
 
             .margin_top_point_5em{
                 margin-top: 0.5em;
+            }
+
+            .wrap_text {
+                overflow-wrap: break-word;
             }
 
         </style>
@@ -97,8 +103,8 @@
 
                         }
                         else {
-                            var error_msg = "<p class='error'>The following errors occurred.</p>";
-                            error_msg += "<p class='error'>" + response['error_msg']+ "</p>";
+{#                            var error_msg = "<p class='error'>The following errors occurred.</p>";#}
+                            var error_msg = "<p class='error'>" + response['error_msg']+ "</p>";
                             $('#loading').html(error_msg);
                         }
                     },
@@ -112,17 +118,17 @@
         }
 
         </script>
-
+        <h4 class="center"> Welcome! Enter the Position and I will Fetch the Fibonacci Number for that Position </h4>
+        <div id="loading" title="Processing"></div>
         <div class="container-fluid major_block">
-            <div id="loading" title="Processing"></div>
-            <h4 class="center"> Welcome! Enter the Position and I will Fetch the Fibonacci Number for that Position </h4>
             <div class="center margin_top_1em">
             <div class="margin_top_point_5em">
             <input class="form-control fib_number" placeholder="Enter the Number">
             <button class="btn btn-primary margin_top_1em" id="submit_button" onclick="get_time_fib(this, 'button');">Submit</button>
 
-            <div class="result_msg margin_top_point_5em"></div>
-            <div class="result_time margin_top_point_5em"></div>
+            <div class="result_time margin_top_1em"></div>
+            <div class="result_msg wrap_text margin_top_point_5em"></div>
+
             </div>
             </div>
         </div>
